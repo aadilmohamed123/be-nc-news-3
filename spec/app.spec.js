@@ -16,10 +16,10 @@ beforeEach(() => {
 });
 
 describe("/", () => {
-  it("GET - 404 - Route Not Found", () => {
+  it.only("GET - 404 - Route Not Found", () => {
     return request(app)
       .get("/HIII")
-      .expect(404)
+      .expect(405)
       .then(response => {
         expect(response.error.text).to.equal("Route Not Found");
       });
@@ -136,12 +136,13 @@ describe("/", () => {
       });
     });
 
-    describe.only("/articles", () => {
+    describe("/articles", () => {
       it("responds with an array of articles objects", async () => {
         const response = await request(app)
           .get("/api/articles")
           .expect(200);
         const articles = response.body.articles;
+        console.log(response.body, "res body");
         expect(articles).to.be.an("array");
         expect(articles[0]).to.include.keys(
           "title",
@@ -155,11 +156,16 @@ describe("/", () => {
       });
       it("GET - 404 - sort by author not exist", async () => {
         const response = await request(app)
-          .get("/api/articles?sort_by=userjk")
-          .expect(400);
-        expect(response.body.msg).to.equal("Column Does Not Exist");
+          .get("/api/articles?author=userjk")
+          .expect(404);
+        expect(response.body.msg).to.equal("Not Found");
       });
-
+      it("GET - 404 - sort by topic not exist", async () => {
+        const response = await request(app)
+          .get("/api/articles?topic=sdfghjk")
+          .expect(404);
+        expect(response.body.msg).to.equal("Not Found");
+      });
       it("GET returns requested articles objects w comment count", () => {
         return request(app)
           .get("/api/articles/")
@@ -196,7 +202,7 @@ describe("/", () => {
             .send({ inc_votes: 10 })
             .expect(200)
             .then(response => {
-              expect(response.body.patchedArticle.votes).to.equal(10);
+              expect(response.body.article.votes).to.equal(10);
             });
         });
 

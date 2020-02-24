@@ -26,16 +26,19 @@ exports.selectArticles = (sort_by = "created_at", order = "desc", query) => {
     .groupBy("articles.article_id");
 
   return succProm.then(rows => {
+    // console.log(query)
     if (rows.length === 0) {
       return Promise.all([
-        checkUserExists(query.author)
-        // checkTopicExists(query.topic)
+        checkUserExists(query.author),
+        checkTopicExists(query.topic)
       ]).then(emptyRows => {
+        console.log(emptyRows, "empty rows");
         if (query.author !== undefined && emptyRows[0] === false) {
           return Promise.reject({ status: 404, msg: "Not Found" });
-          // } else if (query.topic !== undefined && emptyRows[1] === false) {
-          //   return Promise.reject({ status: 404, msg: "Not Found" });
         }
+        // else if (query.topic !== undefined && emptyRows[1] === false) {
+        //   return Promise.reject({ status: 404, msg: "Not Found" });
+        // }
       });
     } else {
       return rows;
@@ -83,33 +86,45 @@ exports.patchArticle = (votes, id) => {
 };
 
 const checkUserExists = author => {
-  return connection
-    .select("*")
-    .from("users")
-    .where("username", author)
-    .then(rows => {
-      console.log(rows.length);
-      if (rows.length !== 0) {
-        return true;
-      } else {
-        return false;
-      }
-    });
+  if (author === undefined) {
+    return false;
+  } else {
+    return connection
+      .select("*")
+      .from("users")
+      .where("username", author)
+      .then(rows => {
+        console.log(rows.length);
+        if (rows.length !== 0) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+  }
 };
 
 const checkTopicExists = topic => {
-  return connection
-    .select("*")
-    .from("topics")
-    .where("slug", topic)
-    .then(rows => {
-      console.log(rows.length);
-      if (rows.length !== 0) {
-        return true;
-      } else {
-        return Promise.reject({ status: 404, msg: "Not Found" });
-      }
-    });
+  if (topic === undefined) {
+    return false;
+  } else {
+    return connection
+      .select("*")
+      .from("topics")
+      .where("slug", topic)
+      .then(rows => {
+        console.log(rows.length);
+        if (rows.length !== 0) {
+          return true;
+        } else {
+          return Promise.reject({
+            status: 404,
+            msg: "Not Found"
+          });
+        }
+      });
+  }
+  console.log("top of check topic");
 };
 const checkArticleExists = id => {
   return connection
