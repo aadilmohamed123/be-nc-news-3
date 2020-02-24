@@ -142,7 +142,7 @@ describe("/", () => {
           .get("/api/articles")
           .expect(200);
         const articles = response.body.articles;
-        console.log(response.body, "res body");
+        // console.log(response.body, "res body");
         expect(articles).to.be.an("array");
         expect(articles[0]).to.include.keys(
           "title",

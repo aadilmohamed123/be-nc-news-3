@@ -29,7 +29,7 @@ exports.handlePsqlErorrs = (err, req, res, next) => {
 // };
 
 exports.handleServerErorrs = (err, req, res, next) => {
-  console.log("look here", err);
+  // console.log("look here", err);
   res.status(500).send({ msg: "Internal Server Error" });
 };
 

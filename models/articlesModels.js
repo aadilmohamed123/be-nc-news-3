@@ -32,7 +32,7 @@ exports.selectArticles = (sort_by = "created_at", order = "desc", query) => {
         checkUserExists(query.author),
         checkTopicExists(query.topic)
       ]).then(emptyRows => {
-        console.log(emptyRows, "empty rows");
+        // console.log(emptyRows, "empty rows");
         if (query.author !== undefined && emptyRows[0] === false) {
           return Promise.reject({ status: 404, msg: "Not Found" });
         }
@@ -94,7 +94,7 @@ const checkUserExists = author => {
       .from("users")
       .where("username", author)
       .then(rows => {
-        console.log(rows.length);
+        // console.log(rows.length);
         if (rows.length !== 0) {
           return true;
         } else {
@@ -124,7 +124,7 @@ const checkTopicExists = topic => {
         }
       });
   }
-  console.log("top of check topic");
+  // console.log("top of check topic");
 };
 const checkArticleExists = id => {
   return connection
@@ -132,7 +132,7 @@ const checkArticleExists = id => {
     .from("articles")
     .where({ article_id: id })
     .then(articlesRows => {
-      console.log(articlesRows.length);
+      // console.log(articlesRows.length);
       if (articlesRows.length !== 0) {
         return true;
       } else {

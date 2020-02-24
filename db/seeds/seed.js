@@ -8,13 +8,13 @@ const {
 const { formatDates, formatComments, makeRefObj } = require("../utils/utils");
 
 exports.seed = function(knex) {
-        console.log();
+        // console.log("STARTING SEED");
 
   return knex.migrate
     .rollback()
     .then(() => knex.migrate.latest())
     .then(() => {
-      console.log("INSERTING DATA")
+      // console.log("INSERTING DATA")
       const topicsInsertions = knex("topics").insert(topicData);
       const usersInsertions = knex("users").insert(userData);
 
