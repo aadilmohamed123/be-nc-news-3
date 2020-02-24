@@ -11,7 +11,7 @@ exports.selectArticles = (sort_by = "created_at", order = "desc", query) => {
   };
   const withTopic = queryBuilder => {
     if (query.topic !== undefined) {
-      queryBuilder.where(key, value);
+      queryBuilder.where(`articles.${key}`, value);
     }
   };
 
@@ -25,20 +25,20 @@ exports.selectArticles = (sort_by = "created_at", order = "desc", query) => {
     .leftJoin("comments", "articles.article_id", "comments.article_id")
     .groupBy("articles.article_id");
 
-  return Promise.all([
-    succProm,
-    checkTopicExists(query.topic),
-    checkUserExists(query.author)
-  ]).then(rows => {
-    if (
-      (query.topic !== undefined && rows[1]) ||
-      (query.author !== undefined && rows[2]) ||
-      query.topic === undefined ||
-      query.author === undefined
-    ) {
-      return rows[0];
+  return succProm.then(rows => {
+    if (rows.length === 0) {
+      return Promise.all([
+        checkUserExists(query.author),
+        checkTopicExists(query.topic)
+      ]).then(emptyRows => {
+        if (query.author !== undefined && emptyRows[0] === false) {
+          return Promise.reject({ status: 404, msg: "Not Found" });
+        } else if (query.topic !== undefined && emptyRows[1] === false) {
+          return Promise.reject({ status: 404, msg: "Not Found" });
+        }
+      });
     } else {
-      return Promise.reject({ status: 404, msg: "Not Found" });
+      return rows;
     }
   });
 };
@@ -70,7 +70,6 @@ exports.patchArticle = (votes, id) => {
     .increment("votes", votes)
     .returning("*")
     .then(res => {
-      // console.log(res);
       return res[0];
     });
   return Promise.all([succProm, checkArticleExists(id)]).then(rows => {
@@ -78,7 +77,7 @@ exports.patchArticle = (votes, id) => {
     if (check) {
       return succProm;
     } else {
-      return Promise.reject({ status: 404, msg: "Not Found" });
+      return false;
     }
   });
 };
@@ -108,7 +107,7 @@ const checkTopicExists = topic => {
       if (rows.length !== 0) {
         return true;
       } else {
-        return false;
+        return Promise.reject({ status: 404, msg: "Not Found" });
       }
     });
 };

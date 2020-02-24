@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
+
 const apiRouter = require("./routers/apiRouter");
 
 const {
@@ -8,12 +10,13 @@ const {
   handleServerErorrs
 } = require("./errors/errors");
 app.use(express.json());
+app.use(cors());
 
 app.use("/api", apiRouter);
 
-app.use((err, req, res, next) => {
-  if (err) console.log(err);
-});
+// app.use((err, req, res, next) => {
+//   if (err) console.log(err);
+// });
 
 app.all("/*", (req, res, next) => {
   res.status(405).send("Route Not Found");

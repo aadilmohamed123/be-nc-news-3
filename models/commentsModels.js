@@ -9,7 +9,7 @@ exports.delComment = id => {
     .where("comment_id", id)
     .del()
     .then(count => {
-      // console.log(count);
+      // //count);
       if (count === 0) {
         return Promise.reject({ status: 404, msg: "Not Found" });
       }
@@ -37,25 +37,25 @@ exports.postCommentByArticleId = (newComment, id) => {
     body: newComment.body,
     author: newComment.created_by
   };
- const succProm = connection
+  const succProm = connection
     .insert(formattedComment)
     .into("comments")
     .returning("*")
     .then(res => {
-      console.log(res, "post response");
+      //res, "post response");
       const postedComment = { body: res[0].body, username: res[0].author };
       return postedComment;
     });
 
-      return Promise.all([succProm, checkArticleExists(id)]).then(rows => {
-        const check = rows[1];
-        if (check) {
-          return succProm;
-        } else {
-          return Promise.reject({ status: 404, msg: "Not Found" });
-        }
-      });
-    };
+  return Promise.all([succProm, checkArticleExists(id)]).then(rows => {
+    const check = rows[1];
+    if (check) {
+      return succProm;
+    } else {
+      return Promise.reject({ status: 404, msg: "Not Found" });
+    }
+  });
+};
 
 exports.patchComment = (votes = 0, id) => {
   const succProm = connection("comments")
@@ -63,17 +63,17 @@ exports.patchComment = (votes = 0, id) => {
     .increment("votes", votes)
     .returning("*")
     .then(res => {
-      // console.log(res);
+      // //res);
       return res[0];
     });
-    return Promise.all([succProm, checkCommentExists(id)]).then(rows => {
-      const check = rows[1];
-      if (check) {
-        return succProm;
-      } else {
-        return Promise.reject({ status: 404, msg: "Not Found" });
-      }
-    });
+  return Promise.all([succProm, checkCommentExists(id)]).then(rows => {
+    const check = rows[1];
+    if (check) {
+      return succProm;
+    } else {
+      return Promise.reject({ status: 404, msg: "Not Found" });
+    }
+  });
 };
 
 const checkCommentExists = id => {
@@ -82,7 +82,7 @@ const checkCommentExists = id => {
     .from("comments")
     .where({ comment_id: id })
     .then(commentRows => {
-      console.log();
+      //);
       if (commentRows.length !== 0) {
         return true;
       } else {
@@ -97,7 +97,7 @@ const checkArticleExists = id => {
     .from("articles")
     .where({ article_id: id })
     .then(articlesRows => {
-      console.log(articlesRows.length);
+      //articlesRows.length);
       if (articlesRows.length !== 0) {
         return true;
       } else {

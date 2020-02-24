@@ -30,6 +30,6 @@ exports.seed = function(knex) {
         });
     })
     .catch(err => {
-      console.log(err);
+      //err);
     });
 };

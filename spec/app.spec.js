@@ -60,7 +60,7 @@ describe("/", () => {
             .send({ inc_votes: "hello" })
             .expect(400)
             .then(response => {
-              console.log(response.body);
+              //response.body);
               expect(response.body.msg).to.equal("Invalid Input For Integer");
             });
         });
@@ -85,7 +85,7 @@ describe("/", () => {
           .delete("/api/comments/999")
           .expect(404)
           .then(response => {
-            // console.log(response);
+            // //response);
             expect(response.body.msg).to.equal("Not Found");
           });
       });
