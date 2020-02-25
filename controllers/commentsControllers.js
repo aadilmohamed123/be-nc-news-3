@@ -26,7 +26,10 @@ exports.removeComment = (req, res, next) => {
 
 exports.getCommentsByArticleId = (req, res, next) => {
   const { article_id } = req.params;
-  selectCommentsByArticleId(article_id)
+  const { query } = req;
+  const { sort_by } = query;
+  const { order } = query;
+  selectCommentsByArticleId(sort_by, order, query, article_id)
     .then(comments => {
       res.status(200).send({ comments });
     })
@@ -38,6 +41,7 @@ exports.createCommentByArticleId = (req, res, next) => {
   const { body } = req;
   postCommentByArticleId(body, article_id)
     .then(postedComment => {
+      console.log({ postedComment });
       res.status(201).send({ comment: postedComment });
     })
     .catch(next);

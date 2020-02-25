@@ -16,10 +16,10 @@ beforeEach(() => {
 });
 
 describe("/", () => {
-  it.only("GET - 404 - Route Not Found", () => {
+  it("GET - 404 - Route Not Found", () => {
     return request(app)
       .get("/HIII")
-      .expect(405)
+      .expect(404)
       .then(response => {
         expect(response.error.text).to.equal("Route Not Found");
       });
@@ -60,7 +60,6 @@ describe("/", () => {
             .send({ inc_votes: "hello" })
             .expect(400)
             .then(response => {
-              //response.body);
               expect(response.body.msg).to.equal("Invalid Input For Integer");
             });
         });
@@ -85,7 +84,6 @@ describe("/", () => {
           .delete("/api/comments/999")
           .expect(404)
           .then(response => {
-            // //response);
             expect(response.body.msg).to.equal("Not Found");
           });
       });
@@ -142,7 +140,6 @@ describe("/", () => {
           .get("/api/articles")
           .expect(200);
         const articles = response.body.articles;
-        // console.log(response.body, "res body");
         expect(articles).to.be.an("array");
         expect(articles[0]).to.include.keys(
           "title",
@@ -233,6 +230,24 @@ describe("/", () => {
         });
 
         describe("/comments", () => {
+          it.only("GET - 200 - Responds with an array of comments objects sorted by votes && ordered by asc ", () => {
+            return request(app)
+              .get("/api/articles/2/comments?sort_by=votes")
+              .expect(200)
+              .then(articles =>
+                expect(articles.body.articles).to.be.sortedBy("votes")
+              );
+          });
+          it.only("GET - 200 - Responds with an array of comments objects sorted by created_at by default && ordered by desc by default ", () => {
+            return request(app)
+              .get("/api/articles/2/comments")
+              .expect(200)
+              .then(res =>
+                expect(res.body.comments).to.be.sortedBy("created_at", {
+                  descending: true
+                })
+              );
+          });
           it("GET returns status 200 and an array of comments for the requested article id", () => {
             return request(app)
               .get("/api/articles/1/comments")
@@ -264,14 +279,20 @@ describe("/", () => {
               .post("/api/articles/2/comments")
               .expect(201)
               .send({
-                body: "Oh,  the asdfghjkl!",
-
-                created_by: "butter_bridge"
+                body:
+                  "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+                belongs_to: "They're not exactly dogs, are they?",
+                created_by: "butter_bridge",
+                votes: 16,
+                created_at: 1511354163389
               })
               .then(response => {
                 expect(response.body.comment).to.contain.keys(
-                  "username",
-                  "body"
+                  "author",
+                  "body",
+                  "comment_id",
+                  "votes",
+                  "created_at"
                 );
               });
           });

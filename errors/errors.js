@@ -18,18 +18,9 @@ exports.handlePsqlErorrs = (err, req, res, next) => {
   } else next(err);
 };
 
-// exports.handlePsqlErorrs = (err, req, res, next) => {
-//   if (err.code !== undefined) {
-//     const psqlCodes = ["22P02", 23503];
 
-//     if (err.status) res.status(err.status).send({ msg: err.msg });
-//     if (psqlCodes.includes(err.code))
-//       res.status(400).send({ msg: err.message || "Bad Request" });
-//   } else next(err);
-// };
 
 exports.handleServerErorrs = (err, req, res, next) => {
-  // console.log("look here", err);
   res.status(500).send({ msg: "Internal Server Error" });
 };
 
