@@ -29,8 +29,9 @@ exports.getCommentsByArticleId = (req, res, next) => {
   const { query } = req;
   const { sort_by } = query;
   const { order } = query;
-  selectCommentsByArticleId(sort_by, order, query, article_id)
+  selectCommentsByArticleId(sort_by, order, article_id)
     .then(comments => {
+      console.log(comments);
       res.status(200).send({ comments });
     })
     .catch(next);

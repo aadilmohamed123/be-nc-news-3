@@ -18,7 +18,7 @@ exports.delComment = id => {
 exports.selectCommentsByArticleId = (
   sort_by = "created_at",
   order = "desc",
-  query,
+
   id
 ) => {
   // const key = Object.keys(query)[0];
@@ -27,13 +27,12 @@ exports.selectCommentsByArticleId = (
   const succProm = connection
     .select("*")
     .from("comments")
-    .orderBy(sort_by, order)
-    .where("article_id", id);
+    .where("comments.article_id", id)
+    .orderBy(sort_by, order);
 
   return Promise.all([succProm, checkArticleExists(id)]).then(rows => {
     const check = rows[1];
     if (check) {
-      console.log(succProm);
       return succProm;
     } else {
       return Promise.reject({ status: 404, msg: "Not Found" });

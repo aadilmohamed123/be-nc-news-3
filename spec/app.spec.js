@@ -157,6 +157,18 @@ describe("/", () => {
           .expect(404);
         expect(response.body.msg).to.equal("Not Found");
       });
+      it.only("GET - 200 - sort by author who exists w no articles", async () => {
+        const response = await request(app)
+          .get("/api/articles?author=lurker")
+          .expect(200);
+        expect(response.body.articles).to.eql([]);
+      });
+       it.only("GET - 200 - sort by author who exists w no articles", async () => {
+         const response = await request(app)
+           .get("/api/articles?topic=paper")
+           .expect(200);
+         expect(response.body.articles).to.eql([]);
+       });
       it("GET - 404 - sort by topic not exist", async () => {
         const response = await request(app)
           .get("/api/articles?topic=sdfghjk")
@@ -230,15 +242,17 @@ describe("/", () => {
         });
 
         describe("/comments", () => {
-          it.only("GET - 200 - Responds with an array of comments objects sorted by votes && ordered by asc ", () => {
+          it("GET - 200 - Responds with an array of comments objects sorted by votes && ordered by asc ", () => {
             return request(app)
               .get("/api/articles/2/comments?sort_by=votes")
               .expect(200)
-              .then(articles =>
-                expect(articles.body.articles).to.be.sortedBy("votes")
+              .then(
+                res =>
+                  console.log(res.body) ||
+                  expect(res.body.comments).to.be.sortedBy("votes")
               );
           });
-          it.only("GET - 200 - Responds with an array of comments objects sorted by created_at by default && ordered by desc by default ", () => {
+          it("GET - 200 - Responds with an array of comments objects sorted by created_at by default && ordered by desc by default ", () => {
             return request(app)
               .get("/api/articles/2/comments")
               .expect(200)
