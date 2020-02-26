@@ -157,18 +157,19 @@ describe("/", () => {
           .expect(404);
         expect(response.body.msg).to.equal("Not Found");
       });
-      it.only("GET - 200 - sort by author who exists w no articles", async () => {
+      it("GET - 200 - sort by author who exists w no articles", async () => {
         const response = await request(app)
           .get("/api/articles?author=lurker")
           .expect(200);
         expect(response.body.articles).to.eql([]);
       });
-       it.only("GET - 200 - sort by author who exists w no articles", async () => {
-         const response = await request(app)
-           .get("/api/articles?topic=paper")
-           .expect(200);
-         expect(response.body.articles).to.eql([]);
-       });
+      it("GET - 200 - sort by author who exists w no articles", async () => {
+        const response = await request(app)
+          .get("/api/articles?topic=paper")
+          .expect(200);
+        console.log(response.body, "responsenm");
+        expect(response.body.articles).to.eql([]);
+      });
       it("GET - 404 - sort by topic not exist", async () => {
         const response = await request(app)
           .get("/api/articles?topic=sdfghjk")

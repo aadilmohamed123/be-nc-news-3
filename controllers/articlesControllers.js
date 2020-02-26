@@ -10,7 +10,7 @@ exports.getArticles = function(req, res, next) {
   const { order } = query;
   selectArticles(sort_by, order, query)
     .then(articles => {
-      res.status(200).send({ articles });
+      res.status(200).send({ articles:[] });
     })
     .catch(next);
 };

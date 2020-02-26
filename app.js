@@ -14,14 +14,14 @@ app.use(cors());
 
 app.use("/api", apiRouter);
 
-app.use((err, req, res, next) => {
-  if (err) console.log(err);
-});
+// app.use((err, req, res, next) => {
+//   if (err) console.log(err);
+// });
 
 app.all("/*", (req, res, next) => {
   res.status(404).send("Route Not Found");
 });
-app.listen(8090);
+app.listen(8070);
 
 app.use(handleCustomErorrs);
 app.use(handlePsqlErorrs);

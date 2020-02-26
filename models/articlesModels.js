@@ -31,10 +31,28 @@ exports.selectArticles = (sort_by = "created_at", order = "desc", query) => {
         checkUserExists(query.author),
         checkTopicExists(query.topic)
       ]).then(emptyRows => {
-        if (query.author !== undefined && emptyRows[0] === false) {
-          return Promise.reject({ status: 404, msg: "Not Found" });
-        } else if (query.topic !== undefined && emptyRows[1] === false) {
-          return Promise.reject({ status: 404, msg: "Not Found" });
+        if (
+          query.author !== undefined &&
+          query.topic === undefined &&
+          emptyRows[0] === false
+        ) {
+          
+            return Promise.reject({
+              status: 404,
+              msg: "Not Found"
+            });
+          
+        } else if (
+          query.topic !== undefined &&
+          query.author === undefined &&
+          emptyRows[1] === false
+        ) {
+          console.log(emptyRows[1] === false);
+          
+          return Promise.reject({
+            status: 404,
+            msg: "Not Found"
+          });
         }
       });
     } else {
@@ -91,7 +109,7 @@ const checkUserExists = author => {
       .from("users")
       .where("username", author)
       .then(rows => {
-        // console.log(rows.length);
+        console.log(rows);
         if (rows.length !== 0) {
           return true;
         } else {
@@ -110,7 +128,7 @@ const checkTopicExists = topic => {
       .from("topics")
       .where("slug", topic)
       .then(rows => {
-        console.log(rows.length);
+        console.log(rows);
         if (rows.length !== 0) {
           return true;
         } else {
@@ -129,7 +147,7 @@ const checkArticleExists = id => {
     .from("articles")
     .where({ article_id: id })
     .then(articlesRows => {
-      // console.log(articlesRows.length);
+      console.log(articlesRows.length);
       if (articlesRows.length !== 0) {
         return true;
       } else {
