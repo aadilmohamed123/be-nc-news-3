@@ -36,23 +36,23 @@ exports.selectArticles = (sort_by = "created_at", order = "desc", query) => {
           query.topic === undefined &&
           emptyRows[0] === false
         ) {
-          
-            return Promise.reject({
-              status: 404,
-              msg: "Not Found"
-            });
-          
+          return Promise.reject({
+            status: 404,
+            msg: "Not Found"
+          });
         } else if (
           query.topic !== undefined &&
           query.author === undefined &&
           emptyRows[1] === false
         ) {
           console.log(emptyRows[1] === false);
-          
+
           return Promise.reject({
             status: 404,
             msg: "Not Found"
           });
+        } else {
+          return [];
         }
       });
     } else {
