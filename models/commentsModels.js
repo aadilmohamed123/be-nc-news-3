@@ -52,14 +52,8 @@ exports.postCommentByArticleId = (newComment, id) => {
 
     .returning("*")
     .then(res => {
-      const postedComment = {
-        comment_id: res[0].comment_id,
-        created_at: res[0].created_at,
+      const [postedComment] = res;
 
-        body: res[0].body,
-        author: res[0].author,
-        votes: res[0].votes
-      };
       return postedComment;
     });
 
@@ -86,7 +80,7 @@ exports.patchComment = (votes = 0, id) => {
     if (check) {
       return succProm;
     } else {
-      return Promise.reject({ status: 422, msg: "Not Found" });
+      return Promise.reject({ status: 404, msg: "Not Found" });
     }
   });
 };

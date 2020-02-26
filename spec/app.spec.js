@@ -63,6 +63,15 @@ describe("/", () => {
               expect(response.body.msg).to.equal("Invalid Input For Integer");
             });
         });
+        it("PATCH - 404 - valid but nonexistent", () => {
+          return request(app)
+            .patch("/api/comments/100")
+            .send({ inc_votes: 0 })
+            .expect(404)
+            .then(response => {
+              expect(response.body.msg).to.equal("Not Found");
+            });
+        });
         it("PATCH - 200 - Missing inc_votes key - defaults to incrementing by 0", () => {
           return request(app)
             .patch("/api/comments/7")
@@ -169,7 +178,7 @@ describe("/", () => {
           .expect(200);
         expect(response.body.articles).to.eql([]);
       });
-      it("GET - 404 - sort by topic not exist", async () =>  {
+      it("GET - 404 - sort by topic not exist", async () => {
         const response = await request(app)
           .get("/api/articles?topic=sdfghjk")
           .expect(404);
@@ -246,10 +255,7 @@ describe("/", () => {
             return request(app)
               .get("/api/articles/2/comments?sort_by=votes")
               .expect(200)
-              .then(
-                res =>
-                  expect(res.body.comments).to.be.sortedBy("votes")
-              );
+              .then(res => expect(res.body.comments).to.be.sortedBy("votes"));
           });
           it("GET - 200 - Responds with an array of comments objects sorted by created_at by default && ordered by desc by default ", () => {
             return request(app)
@@ -287,7 +293,7 @@ describe("/", () => {
               });
           });
 
-          it("POST - 201 - Responds with 201 when given a new comment", () => {
+          it.only("POST - 201 - Responds with 201 when given a new comment", () => {
             return request(app)
               .post("/api/articles/2/comments")
               .expect(201)
