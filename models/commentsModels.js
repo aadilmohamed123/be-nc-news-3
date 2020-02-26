@@ -40,7 +40,6 @@ exports.selectCommentsByArticleId = (
   });
 };
 exports.postCommentByArticleId = (newComment, id) => {
-  console.log(newComment);
   const formattedComment = {
     body: newComment.body,
     author: newComment.created_by,
@@ -53,7 +52,6 @@ exports.postCommentByArticleId = (newComment, id) => {
 
     .returning("*")
     .then(res => {
-      console.log(res);
       const postedComment = {
         comment_id: res[0].comment_id,
         created_at: res[0].created_at,

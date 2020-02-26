@@ -31,7 +31,6 @@ exports.getCommentsByArticleId = (req, res, next) => {
   const { order } = query;
   selectCommentsByArticleId(sort_by, order, article_id)
     .then(comments => {
-      console.log(comments);
       res.status(200).send({ comments });
     })
     .catch(next);
@@ -42,7 +41,6 @@ exports.createCommentByArticleId = (req, res, next) => {
   const { body } = req;
   postCommentByArticleId(body, article_id)
     .then(postedComment => {
-      console.log({ postedComment });
       res.status(201).send({ comment: postedComment });
     })
     .catch(next);

@@ -167,7 +167,6 @@ describe("/", () => {
         const response = await request(app)
           .get("/api/articles?topic=paper")
           .expect(200);
-        console.log(response.body, "responsenm");
         expect(response.body.articles).to.eql([]);
       });
       it("GET - 404 - sort by topic not exist", async () =>  {
@@ -249,7 +248,6 @@ describe("/", () => {
               .expect(200)
               .then(
                 res =>
-                  console.log(res.body) ||
                   expect(res.body.comments).to.be.sortedBy("votes")
               );
           });
