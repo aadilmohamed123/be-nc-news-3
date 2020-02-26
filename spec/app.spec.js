@@ -170,7 +170,7 @@ describe("/", () => {
         console.log(response.body, "responsenm");
         expect(response.body.articles).to.eql([]);
       });
-      it("GET - 404 - sort by topic not exist", async () => {
+      it("GET - 404 - sort by topic not exist", async () =>  {
         const response = await request(app)
           .get("/api/articles?topic=sdfghjk")
           .expect(404);
