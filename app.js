@@ -22,7 +22,7 @@ app.use("/api", apiRouter).all(handle405Errors);
 app.all("/*", (req, res, next) => {
   res.status(404).send("Route Not Found");
 });
-app.listen(8100);
+app.listen(8700);
 
 app.use(handleCustomErorrs);
 app.use(handlePsqlErorrs);
