@@ -300,19 +300,16 @@ describe("/", () => {
               .send({
                 body:
                   "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
-                belongs_to: "They're not exactly dogs, are they?",
-                created_by: "butter_bridge",
-                votes: 16,
-                created_at: 1511354163389
+                username: "butter_bridge"
               })
               .then(response => {
-                expect(response.body.comment).to.contain.keys(
-                  "author",
-                  "body",
-                  "comment_id",
-                  "votes",
-                  "created_at"
-                );
+                  expect(response.body.comment).to.contain.keys(
+                    "author",
+                    "body",
+                    "comment_id",
+                    "votes",
+                    "created_at"
+                  );
               });
           });
         });

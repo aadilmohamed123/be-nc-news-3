@@ -40,11 +40,10 @@ exports.selectCommentsByArticleId = (
   });
 };
 exports.postCommentByArticleId = (newComment, id) => {
-  console.log({ newComment });
   const formattedComment = {
     body: newComment.body,
     author: newComment.username,
-    votes: 0,
+
     article_id: id
   };
   const succProm = connection
