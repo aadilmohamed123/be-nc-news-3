@@ -10,7 +10,7 @@ exports.handlePsqlErorrs = (err, req, res, next) => {
       "42P01": { status: 404, msg: "Relation does not exist" },
       42702: { status: 404, msg: "Author Is Ambiguous" },
       "42703": { status: 400, msg: "Column Does Not Exist" },
-      "23502": { status: 422, msg: "Unprocessable Entity" }
+      "23502": { status: 400, msg: "Required Keys" }
     };
     res
       .status(psqlErrors[err.code].status)
