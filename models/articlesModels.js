@@ -45,7 +45,6 @@ exports.selectArticles = (sort_by = "created_at", order = "desc", query) => {
           query.author === undefined &&
           emptyRows[1] === false
         ) {
-
           return Promise.reject({
             status: 404,
             msg: "Not Found"
