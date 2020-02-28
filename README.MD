@@ -3,15 +3,15 @@
 back-end for a news aggregator website
 
 
-```
-Give examples
-```
-
 ### Installing
 
 
 ```
 npm i
+
+npm setup-dbs
+
+npm run seed
 ```
 
 
