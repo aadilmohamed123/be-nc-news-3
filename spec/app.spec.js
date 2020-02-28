@@ -8,11 +8,11 @@ const expect = chai.expect;
 
 chai.use(require("sams-chai-sorted"));
 
-after(() => {
-  return connection.destroy();
-});
 beforeEach(() => {
   return connection.seed.run();
+});
+after(() => {
+  return connection.destroy();
 });
 
 describe("/", () => {
@@ -293,7 +293,7 @@ describe("/", () => {
               });
           });
 
-          it.only("POST - 201 - Responds with 201 when given a new comment", () => {
+          it("POST - 201 - Responds with 201 when given a new comment", () => {
             return request(app)
               .post("/api/articles/2/comments")
               .expect(201)
@@ -303,13 +303,13 @@ describe("/", () => {
                 username: "butter_bridge"
               })
               .then(response => {
-                  expect(response.body.comment).to.contain.keys(
-                    "author",
-                    "body",
-                    "comment_id",
-                    "votes",
-                    "created_at"
-                  );
+                expect(response.body.comment).to.contain.keys(
+                  "author",
+                  "body",
+                  "comment_id",
+                  "votes",
+                  "created_at"
+                );
               });
           });
         });
