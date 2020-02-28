@@ -2,13 +2,6 @@
 
 back-end for a news aggregator website
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
 
 ```
 Give examples
@@ -16,40 +9,43 @@ Give examples
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
 
 ```
-Give the example
+npm i
 ```
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
 
 Explain how to run the automated tests for this system
 
+```
+npm t
+```
+
+Test the utiliy functions
+
+```
+npm run test-utils
+```
+
 ### Break down into end to end tests
 
-Explain what these tests test and why
+Checks status code and response object when grequested a particular url
 
 ```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
+describe("/topics", () => {
+      it("responds with an array of topics objects", () => {
+        return request(app)
+          .get("/api/topics")
+          .expect(200)
+          .then(response => {
+            const topics = response.body.topics;
+            expect(topics).to.be.an("array");
+            expect(topics[0]).to.have.keys("description", "slug");
+          });
+      });
+    });
 ```
 
 
@@ -71,7 +67,7 @@ Give an example
 
 ## Authors
 
-* **Aadil Mohamed** - *Initial work* - [My GitHub](https://github.com/aadilmohamed123)
+* **Aadil Mohamed** - [My GitHub](https://github.com/aadilmohamed123)
 
 
 
